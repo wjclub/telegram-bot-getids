@@ -50,8 +50,9 @@ bot.on('message', ctx => {
   }
 
   if (ctx.message.photo !== undefined) {
-    const photos = ctx.message.photo.map(e => e.file_id)
-    renders.push(treeify.renderTree(photos, 'Images'))
+    const photo = ctx.message.photo.pop()
+    const customPhoto = { file_id: photo.file_id, file_size: photo.file_size }
+    renders.push(treeify.renderTree(customPhoto, 'Image'))
   }
 
 
