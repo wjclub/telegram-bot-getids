@@ -34,7 +34,14 @@ bot.help(ctx => {
 
 
 const treeify = require('./treeify.js')
+
+
 bot.on('message', ctx => {
+
+  // Handle only private messages here
+  if (ctx.message.chat.type !== 'private') return;
+
+
 
   const renders = []
 
@@ -63,6 +70,17 @@ bot.on('message', ctx => {
 
 
   console.debug(JSON.stringify(ctx.message, null, 2))
+})
+
+
+
+
+bot.on('message', (ctx) => {
+
+  // Handle only public messages here
+  if (ctx.message.chat.type == 'private') return;
+
+
 })
 
 bot.startPolling()
