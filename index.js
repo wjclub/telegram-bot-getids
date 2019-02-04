@@ -14,6 +14,7 @@ const i18n = new TelegrafI18n({
 bot.use(i18n.middleware())
 
 const getAge = require('./idage.js')
+const {formatSizeUnits} = require('./utils.js')
 
 
 bot.start(ctx => {
@@ -51,7 +52,7 @@ bot.on('message', ctx => {
 
   if (ctx.message.photo !== undefined) {
     const photo = ctx.message.photo.pop()
-    const customPhoto = { file_id: photo.file_id, file_size: photo.file_size }
+    const customPhoto = { file_id: photo.file_id, file_size: formatSizeUnits(photo.file_size) }
     renders.push(treeify.renderTree(customPhoto, 'Image'))
   }
 
