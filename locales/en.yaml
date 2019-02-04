@@ -1,0 +1,5 @@
+start: "I am a pretty pour, stupid replacement bot for the old @getidsbot. I just pretty-print the message for you. Sorry.\n\nOh, btw, here is your id creation date: ${age}"
+older_than: "older than"
+newer_than: "newer than"
+aprox: "~"
+you_header: "You"

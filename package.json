@@ -1,0 +1,16 @@
+{
+  "name": "newgetidsbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "html-escaper": "^1.0.1",
+    "telegraf": "^3.27.0",
+    "telegraf-i18n": "^6.4.0"
+  }
+}
