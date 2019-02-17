@@ -37,12 +37,17 @@ const treeify = require('./treeify.js')
 
 
 bot.on('message', ctx => {
+  if (ctx.message.chat.type == 'private')
+    handlePrivateChat(ctx)
+  else
+    handleGroupChat(ctx)
+})
 
-  // Handle only private messages here
-  if (ctx.message.chat.type !== 'private') return;
+function handleGroupChat(ctx) {
 
+}
 
-
+function handlePrivateChat(ctx) {
   const renders = []
 
   if (ctx.from !== undefined) {
@@ -79,6 +84,8 @@ bot.on('message', (ctx) => {
 
   // Handle only public messages here
   if (ctx.message.chat.type == 'private') return;
+  console.debug(JSON.stringify(ctx.message, null, 2))
+}
 
 
 })
