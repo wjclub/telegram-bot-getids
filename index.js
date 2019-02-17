@@ -50,23 +50,33 @@ function handleGroupChat(ctx) {
 function handlePrivateChat(ctx) {
   const renders = []
 
-  if (ctx.from !== undefined) {
-    renders.push(treeify.renderTree(ctx.from, 'You'))
+  if (ctx.message.from !== undefined) {
+    const creationDate = getAge(ctx.from.id)
+    const ageString = ctx.i18n.t(creationDate[0])+' '+creationDate[1]
+    ctx.from['created'] = ageString
+    renders.push(treeify.renderTree(ctx.from, ctx.i18n.t('you_header')))
   }
 
   if (ctx.message.forward_from_chat !== undefined) {
-    renders.push(treeify.renderTree(ctx.message.forward_from_chat, 'Origin Chat'))
+    renders.push(treeify.renderTree(ctx.message.forward_from_chat, ctx.i18n.t('origin_chat_header')))
   }
 
   if (ctx.message.forward_from !== undefined) {
-    renders.push(treeify.renderTree(ctx.message.forward_from, 'Forwarded from'))
+    renders.push(treeify.renderTree(ctx.message.forward_from, ctx.i18n.t('forwarded_from_header')))
   }
 
   if (ctx.message.photo !== undefined) {
-    const photo = ctx.message.photo.pop()
-    const customPhoto = { file_id: photo.file_id, file_size: formatSizeUnits(photo.file_size) }
-    renders.push(treeify.renderTree(customPhoto, 'Image'))
+    const photo = shortenPhoto(ctx.message.photo)
+    renders.push(treeify.renderTree(photo, ctx.i18n.t('image_header')))
   }
+
+  if (ctx.message.audio !== undefined) {
+    const audio = ctx.message.audio
+    audio['thumb'] = shortenPhoto(audio['thumb'])
+
+    renders.push(treeify.renderTree(audio, ctx.i18n.t('audio_header')))
+  }
+
 
 
 
@@ -75,19 +85,15 @@ function handlePrivateChat(ctx) {
 
 
   console.debug(JSON.stringify(ctx.message, null, 2))
-})
-
-
-
-
-bot.on('message', (ctx) => {
-
-  // Handle only public messages here
-  if (ctx.message.chat.type == 'private') return;
-  console.debug(JSON.stringify(ctx.message, null, 2))
 }
 
 
-})
+function shortenPhoto(photos) {
+  const f = ({file_id, file_size}) => `<code>${file_id}</code> (${treeify.formatSizeUnits(file_size)})`
+  if (Array.isArray(photos))
+    return photos.map(f)
+  else
+    return f(photos)
+}
 
 bot.startPolling()
