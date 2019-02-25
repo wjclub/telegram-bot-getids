@@ -36,8 +36,11 @@ function renderLines(object, depth = 0, prefix = [], parentKey = '') {
             if (key == 'username') {
                 text += '<a href="https://t.me/' + object[key] + '">' + valString + '</a>'
             }
-            else if (key == 'file_size') {
+            else if (key == 'file_size' && typeof object[key] != 'string') {
                 text += formatSizeUnits(object[key])
+            }
+            else if (key == 'set_name' && typeof object[key] == 'string') {
+                text += '<a href="https://t.me/addstickers/' + object[key] + '">' + valString + '</a>'
             }
             else if (key == 'duration') {
                 text += formatTime(object[key])
@@ -71,6 +74,7 @@ function renderPrefix(prefix, isLast) {
 }
 
 function formatSizeUnits(bytes) {
+
     if (bytes >= 1073741824)
         return (bytes / 1073741824).toFixed(2) + ' GB';
     else if (bytes >= 1048576)

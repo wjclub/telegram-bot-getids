@@ -25,7 +25,7 @@ bot.start(ctx => {
 
   ctx.reply(msg_text , {parse_mode: 'HTML'})
 
-  console.debug('[/start]', ctx.from.first_name, '->', msg_text)
+  //console.debug('[/start]', ctx.from.first_name, '->', msg_text)
 })
 
 bot.help(ctx => {
@@ -72,35 +72,61 @@ function handlePrivateChat(ctx) {
     renders.push(treeify.renderTree(fwfrom, ctx.i18n.t('forwarded_from_header')))
   }
 
+
   if (ctx.message.photo !== undefined) {
-    const photo = shortenPhoto(ctx.message.photo)
-    renders.push(treeify.renderTree(photo, ctx.i18n.t('image_header')))
+    renders.push(treeify.renderTree({
+      file_size: ctx.message.photo.pop().file_size
+    }, ctx.i18n.t('image_header')))
+  }
+
+  if (ctx.message.sticker !== undefined) {
+    const sticker = ctx.message.sticker
+
+    // Remove all file_ids, as they vary between bots
+    delete sticker.thumb
+
+    renders.push(treeify.renderTree(sticker, ctx.i18n.t('sticker_header')))
   }
 
   if (ctx.message.audio !== undefined) {
     const audio = ctx.message.audio
-    audio['thumb'] = shortenPhoto(audio['thumb'])
+
+    // Remove all file_ids, as they vary between bots
+    delete audio.thumb
+    delete audio.file_id
 
     renders.push(treeify.renderTree(audio, ctx.i18n.t('audio_header')))
+  }
+
+  if (ctx.message.video !== undefined) {
+    const video = ctx.message.video
+
+    // Remove all file_ids, as they vary between bots
+    delete video.thumb
+    delete video.file_id
+
+    renders.push(treeify.renderTree(video, ctx.i18n.t('video_header')))
+  }
+
+  if (ctx.message.document !== undefined) {
+    const document = ctx.message.document
+
+    // Remove all file_ids, as they vary between bots
+    delete document.file_id
+
+    renders.push(treeify.renderTree(document, ctx.i18n.t('document_header')))
   }
 
 
 
 
-  ctx.reply(renders.join('\n\n'), { parse_mode: 'HTML' })
+
+  ctx.reply(renders.join('\n\n'), { parse_mode: 'HTML', disable_web_page_preview: true})
 
 
 
-  console.debug(JSON.stringify(ctx.message, null, 2))
+  //console.debug(JSON.stringify(ctx.message, null, 2))
 }
 
-
-function shortenPhoto(photos) {
-  const f = ({file_id, file_size}) => `<code>${file_id}</code> (${treeify.formatSizeUnits(file_size)})`
-  if (Array.isArray(photos))
-    return photos.map(f)
-  else
-    return f(photos)
-}
 
 bot.startPolling()
