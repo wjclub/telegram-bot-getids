@@ -61,8 +61,15 @@ function handlePrivateChat(ctx) {
     renders.push(treeify.renderTree(ctx.message.forward_from_chat, ctx.i18n.t('origin_chat_header')))
   }
 
-  if (ctx.message.forward_from !== undefined) {
-    renders.push(treeify.renderTree(ctx.message.forward_from, ctx.i18n.t('forwarded_from_header')))
+  if (ctx.message.forward_from !== undefined && ctx.message.from.id != ctx.message.forward_from.id) {
+    const fwfrom = ctx.message.forward_from
+
+    if (fwfrom.first_name !== undefined) {
+      const creationDate = getAge(fwfrom.id)
+      const ageString = ctx.i18n.t(creationDate[0])+' '+creationDate[1]
+      fwfrom['created'] = ageString
+    }
+    renders.push(treeify.renderTree(fwfrom, ctx.i18n.t('forwarded_from_header')))
   }
 
   if (ctx.message.photo !== undefined) {
