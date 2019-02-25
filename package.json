@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "html-escaper": "^1.0.1",
+    "iso-lang-codes": "^1.0.0",
     "telegraf": "^3.27.0",
     "telegraf-i18n": "^6.4.0"
   }

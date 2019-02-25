@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 const html = require('html-escaper');
+const codes = require('./node_modules/iso-lang-codes/src/index.js')
 const idage = require('./idage.js').getAge;
 
 
@@ -45,8 +46,9 @@ function renderLines(object, depth = 0, prefix = [], parentKey = '') {
             else if (key == 'duration') {
                 text += formatTime(object[key])
             }
-            else if (key == 'thumb' || parentKey == 'photo') {
-                text += object[key]
+            else if (key == 'language_code') {
+                const langString = codes.locales[valString] || "-"
+                text += `<code>${valString}</code> (${langString})`
             }
             /*else if (key == 'type') {
                 // Add type handling -> emojis and robot/user separation
