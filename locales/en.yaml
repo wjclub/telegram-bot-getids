@@ -1,4 +1,4 @@
-start: "I am a pretty pour, stupid replacement bot for the old @getidsbot. I just pretty-print the message for you. Sorry.\n\nOh, btw, here is your id creation date: ${age}"
+start: "Hello there human! I am a computer program that can chat (also known as a 'bot') and I can tell you somehting about you and the messages you send he.\n\nTry it out, just forward me some messages ;)\n\n<b>Note from the developers:</b>\nThis is a very early version of the bot. Therefore a few things (explainatory texts, etc.) are still missing. If you can code, here is the <a href=\"https://github.com/wjclub/telegram-bot-getids\">GitHub repo</a>. If you don't know how to program, you can still help. Just tell us @wjclub."
 older_than: "older than"
 newer_than: "newer than"
 aprox: "~"
