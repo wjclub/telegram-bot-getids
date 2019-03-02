@@ -129,4 +129,30 @@ function handlePrivateChat(ctx) {
 }
 
 
+
+
+bot.on('inline_query', (ctx) => {
+  const creationDate = getAge(ctx.from.id)
+  const ageString = ctx.i18n.t(creationDate[0])+' '+creationDate[1]
+  ctx.from['created'] = ageString
+  const msgText = treeify.renderTree(ctx.from, ctx.i18n.t('me_header'))
+  const result = [{
+    type: 'article',
+    id: 'me_' + ctx.from.id,
+    title: ctx.i18n.t('inline_query_your_info_header'),
+    description: ctx.i18n.t('inline_query_your_info_text'),
+    input_message_content: {
+      message_text: msgText,
+      parse_mode: 'HTML',
+      disable_web_page_preview: true
+    }
+  }]
+  ctx.answerInlineQuery(result, {
+    is_personal: true,
+    cache_time: 30
+  })
+})
+
+
+
 bot.startPolling()
