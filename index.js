@@ -16,16 +16,23 @@ bot.use(i18n.middleware())
 const getAge = require('./idage.js')
 const {formatSizeUnits} = require('./utils.js')
 
+let botName = ""
+
+const getAgeString = (ctx) => {
+  const idAgeHelpLink = `<a href="https://t.me/${botName}?start=idhelp">(?)</a>`
+  const creationDate = getAge(ctx.from.id)
+  return ctx.i18n.t(creationDate[0])+' '+creationDate[1]+' '+idAgeHelpLink
+}
 
 bot.start(ctx => {
-  const creationDate = getAge(ctx.from.id)
-  const ageString = ctx.i18n.t(creationDate[0])+' '+creationDate[1]
-  let msg_text = ctx.i18n.t('start', {age: ageString})
-  msg_text += "\n\n" + treeify.renderTree(ctx.from, ctx.i18n.t('you_header'))
+  if (ctx.message.text == '/start idhelp') {
+    ctx.reply(ctx.i18n.t('idhelp'), {parse_mode: 'HTML'})
+  } else {
+    let msg_text = ctx.i18n.t('start')
+    msg_text += "\n\n" + treeify.renderTree(ctx.from, ctx.i18n.t('you_header'))
+    ctx.reply(msg_text , {parse_mode: 'HTML'})
+  }
 
-  ctx.reply(msg_text , {parse_mode: 'HTML'})
-
-  //console.debug('[/start]', ctx.from.first_name, '->', msg_text)
 })
 
 bot.help(ctx => {
@@ -50,35 +57,35 @@ function handleGroupChat(ctx) {
 function handlePrivateChat(ctx) {
   const renders = []
 
+  // Render CURRENT USER
   if (ctx.message.from !== undefined) {
-    const creationDate = getAge(ctx.from.id)
-    const ageString = ctx.i18n.t(creationDate[0])+' '+creationDate[1]
-    ctx.from['created'] = ageString
+    ctx.from['created'] = getAgeString(ctx)
     renders.push(treeify.renderTree(ctx.from, ctx.i18n.t('you_header')))
   }
 
+  // Render ORIGIN CHAT
   if (ctx.message.forward_from_chat !== undefined) {
     renders.push(treeify.renderTree(ctx.message.forward_from_chat, ctx.i18n.t('origin_chat_header')))
   }
 
+  // Render ORIGIN ACCOUNT
   if (ctx.message.forward_from !== undefined && ctx.message.from.id != ctx.message.forward_from.id) {
     const fwfrom = ctx.message.forward_from
 
     if (fwfrom.first_name !== undefined) {
-      const creationDate = getAge(fwfrom.id)
-      const ageString = ctx.i18n.t(creationDate[0])+' '+creationDate[1]
-      fwfrom['created'] = ageString
+      fwfrom['created'] = getAgeString(ctx)
     }
     renders.push(treeify.renderTree(fwfrom, ctx.i18n.t('forwarded_from_header')))
   }
 
-
+  // Render PHÒTOS
   if (ctx.message.photo !== undefined) {
     renders.push(treeify.renderTree({
       file_size: ctx.message.photo.pop().file_size
     }, ctx.i18n.t('image_header')))
   }
 
+  // Render STICKERS
   if (ctx.message.sticker !== undefined) {
     const sticker = ctx.message.sticker
 
@@ -88,6 +95,7 @@ function handlePrivateChat(ctx) {
     renders.push(treeify.renderTree(sticker, ctx.i18n.t('sticker_header')))
   }
 
+  // Render AUDIO
   if (ctx.message.audio !== undefined) {
     const audio = ctx.message.audio
 
@@ -98,6 +106,7 @@ function handlePrivateChat(ctx) {
     renders.push(treeify.renderTree(audio, ctx.i18n.t('audio_header')))
   }
 
+  // Render VIDEOS
   if (ctx.message.video !== undefined) {
     const video = ctx.message.video
 
@@ -108,6 +117,7 @@ function handlePrivateChat(ctx) {
     renders.push(treeify.renderTree(video, ctx.i18n.t('video_header')))
   }
 
+  // Render DOCUMENTS
   if (ctx.message.document !== undefined) {
     const document = ctx.message.document
 
@@ -117,13 +127,19 @@ function handlePrivateChat(ctx) {
     renders.push(treeify.renderTree(document, ctx.i18n.t('document_header')))
   }
 
-
-
+  // Render MESSAGE INFO
+  const msgInfo = {}
+  if (ctx.message.forward_from_message_id !== undefined) {
+    const msgId = ctx.message.forward_from_message_id
+    const fwdFrom = ctx.message.forward_from_chat
+    msgInfo['message_id'] = (fwdFrom.username == undefined) ? msgId :
+      `<a href="https://t.me/${fwdFrom.username}/${msgId}}">${msgId}</a>`
+  }
+  if (Object.keys(msgInfo).length > 0)
+    renders.push(treeify.renderTree(msgInfo, ctx.i18n.t('message_header')))
 
 
   ctx.reply(renders.join('\n\n'), { parse_mode: 'HTML', disable_web_page_preview: true})
-
-
 
   //console.debug(JSON.stringify(ctx.message, null, 2))
 }
@@ -154,5 +170,10 @@ bot.on('inline_query', (ctx) => {
 })
 
 
+const getUsername = (async function() {
+  const botInfo = await bot.telegram.getMe()
+  botName = botInfo.username
+})
+getUsername()
 
 bot.startPolling()

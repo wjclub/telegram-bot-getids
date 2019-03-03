@@ -1,6 +1,6 @@
 {
   "name": "telegram-bot-getids",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Telegram Bot that prints out detailed informations about users, chats and media.",
   "main": "index.js",
   "scripts": {},

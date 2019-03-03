@@ -9,7 +9,7 @@ const idage = require('./idage.js').getAge;
 
 
 exports.renderTree = function (object, title = 'Root') {
-    return `${title.toString()}\n${renderLines(object).join('\n')}`;
+    return `<b>${title.toString()}</b>\n${renderLines(object).join('\n')}`;
 };
 
 function renderLines(object, depth = 0, prefix = [], parentKey = '') {
@@ -49,11 +49,9 @@ function renderLines(object, depth = 0, prefix = [], parentKey = '') {
             else if (key == 'language_code') {
                 const langString = codes.locales[valString] || "-"
                 text += `<code>${valString}</code> (${langString})`
-            }
-            /*else if (key == 'type') {
-                // Add type handling -> emojis and robot/user separation
-            } */
-            else if (typeof object[key] === 'number' || key.indexOf('id') !== -1) {
+            } else if (key == 'message_id' || key == 'created') {
+                text += object[key]
+            } else if (typeof object[key] === 'number' || key.indexOf('id') !== -1) {
                 text += '<code>' + valString + '</code>'
             } else {
                 text += valString

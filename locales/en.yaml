@@ -1,15 +1,26 @@
 start: "Hello there human! I am a computer program that can chat (also known as a 'bot') and I can tell you somehting about you and the messages you send he.\n\nTry it out, just forward me some messages ;)\n\n<b>Note from the developers:</b>\nThis is a very early version of the bot. Therefore a few things (explainatory texts, etc.) are still missing. If you can code, here is the <a href=\"https://github.com/wjclub/telegram-bot-getids\">GitHub repo</a>. If you don't know how to program, you can still help. Just tell us @wjclub."
+help: "Not implemented yet"
+idhelp: |
+  <b>Account creation date</b>
+
+  <b>How it works</b>
+  To quote @Superuser27: Interpolation on known registration dates of certain IDs.
+  The bot just has a large list of Account's IDs and their associated (known) creation dates and compares your id against this list.
+
+  <b>My account creation date is wrong</b>
+  Sure. That is why there is a "~" in front of it. It is just a guess and very often the IDs given out at a time differ very much from each other, resulting in a sheer data mess. So just consider the date as some sort of art.
 older_than: "older than"
 newer_than: "newer than"
 aprox: "~"
-you_header: "You"
-me_header: "Me"
-origin_chat_header: "Origin chat"
-forwarded_from_header: "Forwarded from"
-image_header: "Image"
-audio_header: "Audio"
-sticker_header: "Sticker"
-document_header: "File"
-video_header: "Video"
-inline_query_your_info_header: "You"
+you_header: "👤 You"
+me_header: "👤 Me"
+origin_chat_header: "💬 Origin chat"
+forwarded_from_header: "👤 Forwarded from"
+image_header: "🖼 Image"
+audio_header: "🎧 Audio"
+sticker_header: "😃 Sticker"
+document_header: "📎 File"
+video_header: "🎞 Video"
+message_header: "📃 Message"
+inline_query_your_info_header: "👤 You"
 inline_query_your_info_text: "Click here to send your info"
