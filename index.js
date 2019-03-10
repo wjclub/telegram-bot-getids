@@ -18,9 +18,9 @@ const {formatSizeUnits} = require('./utils.js')
 
 let botName = ""
 
-const getAgeString = (ctx) => {
+const getAgeString = (ctx, key) => {
   const idAgeHelpLink = `<a href="https://t.me/${botName}?start=idhelp">(?)</a>`
-  const creationDate = getAge(ctx.from.id)
+  const creationDate = getAge(ctx[key].id)
   return ctx.i18n.t(creationDate[0])+' '+creationDate[1]+' '+idAgeHelpLink
 }
 
@@ -59,7 +59,7 @@ function handlePrivateChat(ctx) {
 
   // Render CURRENT USER
   if (ctx.message.from !== undefined) {
-    ctx.from['created'] = getAgeString(ctx)
+    ctx.from['created'] = getAgeString(ctx, 'from')
     renders.push(treeify.renderTree(ctx.from, ctx.i18n.t('you_header')))
   }
 
@@ -73,7 +73,7 @@ function handlePrivateChat(ctx) {
     const fwfrom = ctx.message.forward_from
 
     if (fwfrom.first_name !== undefined) {
-      fwfrom['created'] = getAgeString(ctx)
+      fwfrom['created'] = getAgeString(ctx, 'forward_from')
     }
     renders.push(treeify.renderTree(fwfrom, ctx.i18n.t('forwarded_from_header')))
   }
