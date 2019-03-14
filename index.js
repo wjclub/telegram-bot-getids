@@ -20,7 +20,7 @@ let botName = ""
 
 const getAgeString = (ctx, key) => {
   const idAgeHelpLink = `<a href="https://t.me/${botName}?start=idhelp">(?)</a>`
-  const creationDate = getAge(ctx[key].id)
+  const creationDate = getAge(ctx.message[key].id)
   return ctx.i18n.t(creationDate[0])+' '+creationDate[1]+' '+idAgeHelpLink
 }
 
