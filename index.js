@@ -70,7 +70,14 @@ function handlePrivateChat(ctx) {
 
   // Render ORIGIN ACCOUNT
   if (ctx.message.forward_from !== undefined && ctx.message.from.id != ctx.message.forward_from.id) {
-    const fwfrom = ctx.message.forward_from
+    let fwfrom = ctx.message.forward_from
+
+    // Handle hidden account forwards:
+    if (fwfrom.id == 760715803) {
+      fwfrom = {
+        hidden: ctx.i18n.t('user_hid_account')
+      }
+    }
 
     if (fwfrom.first_name !== undefined) {
       fwfrom['created'] = getAgeString(ctx, 'forward_from')
