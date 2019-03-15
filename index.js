@@ -24,6 +24,17 @@ const getAgeString = (ctx, key) => {
   return ctx.i18n.t(creationDate[0])+' '+creationDate[1]+' '+idAgeHelpLink
 }
 
+const getDateString = (ctx) => {
+  const date = new Date(ctx.message.forward_date * 1000)
+  const day = date.getUTCDate()
+  const month = date.getUTCMonth() + 1
+  const year = date.getUTCFullYear()
+
+  // return `${ctx.i18n.t('forwarded_date_header')}\n └ ${day}/${month}/${year}`
+  // return `${ctx.i18n.t('forwarded_date_header')}\n └ ${date.toUTCString()}`
+  return date.toUTCString()
+}
+
 bot.start(ctx => {
   if (ctx.message.text == '/start idhelp') {
     ctx.reply(ctx.i18n.t('idhelp'), {parse_mode: 'HTML'})
@@ -142,6 +153,11 @@ function handlePrivateChat(ctx) {
     msgInfo['message_id'] = (fwdFrom.username == undefined) ? msgId :
       `<a href="https://t.me/${fwdFrom.username}/${msgId}}">${msgId}</a>`
   }
+
+  if (ctx.message.forward_date !== undefined) {
+    msgInfo['forward_date'] = getDateString(ctx)
+  }
+
   if (Object.keys(msgInfo).length > 0)
     renders.push(treeify.renderTree(msgInfo, ctx.i18n.t('message_header')))
 
