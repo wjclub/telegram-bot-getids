@@ -137,7 +137,7 @@ function handlePrivateChat (ctx) {
     const msgId = ctx.message.forward_from_message_id
     const fwdFrom = ctx.message.forward_from_chat
     msgInfo['message_id'] = (fwdFrom.username === undefined) ? msgId
-      : `<a href="https://t.me/${fwdFrom.username}/${msgId}}">${msgId}</a>`
+      : `<a href="https://t.me/${fwdFrom.username}/${msgId}">${msgId}</a>`
   }
 
   if (ctx.message.forward_date !== undefined) {
