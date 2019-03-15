@@ -1,7 +1,6 @@
 const Telegraf = require('telegraf')
 const bot = new Telegraf(process.env.BOT_TOKEN)
 
-
 const TelegrafI18n = require('telegraf-i18n')
 const path = require('path')
 
@@ -14,58 +13,45 @@ const i18n = new TelegrafI18n({
 bot.use(i18n.middleware())
 
 const getAge = require('./idage.js')
-const {formatSizeUnits} = require('./utils.js')
 
-let botName = ""
+let botName = ''
 
 const getAgeString = (ctx, key) => {
   const idAgeHelpLink = `<a href="https://t.me/${botName}?start=idhelp">(?)</a>`
   const creationDate = getAge(ctx.message[key].id)
-  return ctx.i18n.t(creationDate[0])+' '+creationDate[1]+' '+idAgeHelpLink
+  return ctx.i18n.t(creationDate[0]) + ' ' + creationDate[1] + ' ' + idAgeHelpLink
 }
 
 const getDateString = (ctx) => {
   const date = new Date(ctx.message.forward_date * 1000)
-  const day = date.getUTCDate()
-  const month = date.getUTCMonth() + 1
-  const year = date.getUTCFullYear()
-
-  // return `${ctx.i18n.t('forwarded_date_header')}\n └ ${day}/${month}/${year}`
-  // return `${ctx.i18n.t('forwarded_date_header')}\n └ ${date.toUTCString()}`
   return date.toUTCString()
 }
 
 bot.start(ctx => {
-  if (ctx.message.text == '/start idhelp') {
-    ctx.reply(ctx.i18n.t('idhelp'), {parse_mode: 'HTML'})
+  if (ctx.message.text === '/start idhelp') {
+    ctx.reply(ctx.i18n.t('idhelp'), { parse_mode: 'HTML' })
   } else {
-    let msg_text = ctx.i18n.t('start')
-    msg_text += "\n\n" + treeify.renderTree(ctx.from, ctx.i18n.t('you_header'))
-    ctx.reply(msg_text , {parse_mode: 'HTML'})
+    let msgText = ctx.i18n.t('start')
+    msgText += '\n\n' + treeify.renderTree(ctx.from, ctx.i18n.t('you_header'))
+    ctx.reply(msgText, { parse_mode: 'HTML' })
   }
-
 })
 
 bot.help(ctx => {
   ctx.reply(ctx.i18n.t('help'), { parse_mode: 'HTML' })
 })
 
-
 const treeify = require('./treeify.js')
 
-
 bot.on('message', ctx => {
-  if (ctx.message.chat.type == 'private')
-    handlePrivateChat(ctx)
-  else
-    handleGroupChat(ctx)
+  if (ctx.message.chat.type === 'private') { handlePrivateChat(ctx) } else { handleGroupChat(ctx) }
 })
 
-function handleGroupChat(ctx) {
+function handleGroupChat (ctx) {
 
 }
 
-function handlePrivateChat(ctx) {
+function handlePrivateChat (ctx) {
   const renders = []
 
   // Render CURRENT USER
@@ -80,11 +66,11 @@ function handlePrivateChat(ctx) {
   }
 
   // Render ORIGIN ACCOUNT
-  if (ctx.message.forward_from !== undefined && ctx.message.from.id != ctx.message.forward_from.id) {
+  if (ctx.message.forward_from !== undefined && ctx.message.from.id !== ctx.message.forward_from.id) {
     let fwfrom = ctx.message.forward_from
 
     // Handle hidden account forwards:
-    if (fwfrom.id == 760715803) {
+    if (fwfrom.id === 760715803) {
       fwfrom = {
         hidden: ctx.i18n.t('user_hid_account')
       }
@@ -150,29 +136,24 @@ function handlePrivateChat(ctx) {
   if (ctx.message.forward_from_message_id !== undefined) {
     const msgId = ctx.message.forward_from_message_id
     const fwdFrom = ctx.message.forward_from_chat
-    msgInfo['message_id'] = (fwdFrom.username == undefined) ? msgId :
-      `<a href="https://t.me/${fwdFrom.username}/${msgId}}">${msgId}</a>`
+    msgInfo['message_id'] = (fwdFrom.username === undefined) ? msgId
+      : `<a href="https://t.me/${fwdFrom.username}/${msgId}}">${msgId}</a>`
   }
 
   if (ctx.message.forward_date !== undefined) {
     msgInfo['forward_date'] = getDateString(ctx)
   }
 
-  if (Object.keys(msgInfo).length > 0)
-    renders.push(treeify.renderTree(msgInfo, ctx.i18n.t('message_header')))
+  if (Object.keys(msgInfo).length > 0) { renders.push(treeify.renderTree(msgInfo, ctx.i18n.t('message_header'))) }
 
+  ctx.reply(renders.join('\n\n'), { parse_mode: 'HTML', disable_web_page_preview: true })
 
-  ctx.reply(renders.join('\n\n'), { parse_mode: 'HTML', disable_web_page_preview: true})
-
-  //console.debug(JSON.stringify(ctx.message, null, 2))
+  // console.debug(JSON.stringify(ctx.message, null, 2))
 }
-
-
-
 
 bot.on('inline_query', (ctx) => {
   const creationDate = getAge(ctx.from.id)
-  const ageString = ctx.i18n.t(creationDate[0])+' '+creationDate[1]
+  const ageString = ctx.i18n.t(creationDate[0]) + ' ' + creationDate[1]
   ctx.from['created'] = ageString
   const msgText = treeify.renderTree(ctx.from, ctx.i18n.t('me_header'))
   const result = [{
@@ -192,11 +173,10 @@ bot.on('inline_query', (ctx) => {
   })
 })
 
-
-const getUsername = (async function() {
+const getUsername = async function () {
   const botInfo = await bot.telegram.getMe()
   botName = botInfo.username
-})
+}
 getUsername()
 
 bot.startPolling()

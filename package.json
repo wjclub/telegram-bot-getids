@@ -1,9 +1,12 @@
 {
   "name": "telegram-bot-getids",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Telegram Bot that prints out detailed informations about users, chats and media.",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "start": "node index.js",
+    "test": "standard"
+  },
   "author": "Jonas Zohren",
   "license": "MIT",
   "dependencies": {
@@ -11,5 +14,8 @@
     "iso-lang-codes": "^1.0.0",
     "telegraf": "^3.27.1",
     "telegraf-i18n": "^6.5.0"
+  },
+  "devDependencies": {
+    "standard": "^12.0.1"
   }
 }
