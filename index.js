@@ -133,6 +133,8 @@ function handlePrivateChat (ctx) {
 
   // Render MESSAGE INFO
   const msgInfo = {}
+
+  // add message_id with link to original chat's message
   if (ctx.message.forward_from_message_id !== undefined) {
     const msgId = ctx.message.forward_from_message_id
     const fwdFrom = ctx.message.forward_from_chat
@@ -140,10 +142,20 @@ function handlePrivateChat (ctx) {
       : `<a href="https://t.me/${fwdFrom.username}/${msgId}">${msgId}</a>`
   }
 
+  // add original sending date of message
   if (ctx.message.forward_date !== undefined) {
     msgInfo['forward_date'] = getDateString(ctx)
   }
 
+  // display hidden links
+  const hiddenLinks = (ctx.message.entities === undefined) ? [] : ctx.message.entities
+    .filter(e => e.type === 'text_link')
+    .map(e => e.url)
+  if (hiddenLinks.length > 0) {
+    msgInfo['urls'] = hiddenLinks
+  }
+
+  // only add the 'Message' part if it contains elements
   if (Object.keys(msgInfo).length > 0) { renders.push(treeify.renderTree(msgInfo, ctx.i18n.t('message_header'))) }
 
   ctx.reply(renders.join('\n\n'), { parse_mode: 'HTML', disable_web_page_preview: true })
