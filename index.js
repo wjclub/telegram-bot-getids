@@ -70,7 +70,7 @@ function handlePrivateChat (ctx) {
     let fwfrom = ctx.message.forward_from
 
     // Handle hidden account forwards:
-    if (fwfrom.id === 760715803) {
+    if (fwfrom.id === -1001228946795) {
       fwfrom = {
         hidden: ctx.i18n.t('user_hid_account')
       }
