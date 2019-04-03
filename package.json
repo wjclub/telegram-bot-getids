@@ -12,7 +12,7 @@
   "dependencies": {
     "html-escaper": "^1.0.1",
     "iso-lang-codes": "^1.0.0",
-    "telegraf": "^3.27.1",
+    "telegraf": "^3.28.0",
     "telegraf-i18n": "^6.5.0"
   },
   "devDependencies": {
