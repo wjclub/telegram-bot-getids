@@ -131,6 +131,16 @@ function handlePrivateChat (ctx) {
     renders.push(treeify.renderTree(document, ctx.i18n.t('document_header')))
   }
 
+  // Render native POLLS
+  if (ctx.message.poll !== undefined) {
+    const poll = ctx.message.poll
+
+    // Rewrite options to plain array, since we don't get votes anyways.
+    poll.options = poll.options.map(o => o.text)
+
+    renders.push(treeify.renderTree(poll, ctx.i18n.t('poll_header')))
+  }
+
   // Render MESSAGE INFO
   const msgInfo = {}
 
