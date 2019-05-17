@@ -104,7 +104,7 @@ exports.formatTime = formatTime
 
 function escapeHtml (unsafe) {
   if (unsafe === undefined) {
-    eturn unsafe
+    return unsafe
   } else if (typeof unsafe === 'object') {
     for (var key in unsafe) {
       unsafe[key] = escapeHtml(unsafe[key])
