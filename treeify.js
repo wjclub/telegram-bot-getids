@@ -21,11 +21,13 @@ function renderLines (object, depth = 0, prefix = [], parentKey = '') {
       let valString = escapeHtml(object[key].toString())
 
       if (key === 'username') {
-        text += '<a href="https://t.me/' + object[key] + '">' + valString + '</a>'
+        text += '<a href="https://t.me/' + object[key] + '">' +
+          valString + '</a>'
       } else if (key === 'file_size' && typeof object[key] !== 'string') {
         text += formatSizeUnits(object[key])
       } else if (key === 'set_name' && typeof object[key] === 'string') {
-        text += '<a href="https://t.me/addstickers/' + object[key] + '">' + valString + '</a>'
+        text += '<a href="https://t.me/addstickers/' +
+          object[key] + '">' + valString + '</a>'
       } else if (key === 'duration') {
         text += formatTime(object[key])
       } else if (key === 'language_code') {
@@ -43,7 +45,9 @@ function renderLines (object, depth = 0, prefix = [], parentKey = '') {
     } else {
       // go to deeper level
       lines.push(renderPrefix(prefix, isLast) + '<b>' + key + '</b>')
-      lines = lines.concat(renderLines(object[key], depth + 1, prefix.concat([(isLast ? ' ' : '┊')]), key))
+      lines = lines.concat(renderLines(
+        object[key], depth + 1, prefix.concat([(isLast ? ' ' : '┊')]), key
+      ))
     }
   }
   return lines
@@ -54,7 +58,19 @@ function renderPrefix (prefix, isLast) {
 }
 
 function formatSizeUnits (bytes) {
-  if (bytes >= 1073741824) { return (bytes / 1073741824).toFixed(2) + ' GB' } else if (bytes >= 1048576) { return (bytes / 1048576).toFixed(2) + ' MB' } else if (bytes >= 1024) { return (bytes / 1024).toFixed(2) + ' kB' } else if (bytes > 1) { return bytes + ' bytes' } else if (bytes === 1) { return bytes + ' byte' } else { return '0 bytes' }
+  if (bytes >= 1073741824) {
+    return (bytes / 1073741824).toFixed(2) + ' GB'
+  } else if (bytes >= 1048576) {
+    return (bytes / 1048576).toFixed(2) + ' MB'
+  } else if (bytes >= 1024) {
+    return (bytes / 1024).toFixed(2) + ' kB'
+  } else if (bytes > 1) {
+    return bytes + ' bytes'
+  } else if (bytes === 1) {
+    return bytes + ' byte'
+  } else {
+    return '0 bytes'
+  }
 }
 exports.formatSizeUnits = formatSizeUnits
 
@@ -87,7 +103,9 @@ function formatTime (seconds) {
 exports.formatTime = formatTime
 
 function escapeHtml (unsafe) {
-  if (unsafe === undefined) { return unsafe } else if (typeof unsafe === 'object') {
+  if (unsafe === undefined) {
+    eturn unsafe
+  } else if (typeof unsafe === 'object') {
     for (var key in unsafe) {
       unsafe[key] = escapeHtml(unsafe[key])
     }

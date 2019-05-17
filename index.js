@@ -18,8 +18,8 @@ let botName = ''
 
 const getAgeString = (ctx, key) => {
   const idAgeHelpLink = `<a href="https://t.me/${botName}?start=idhelp">(?)</a>`
-  const creationDate = getAge(ctx.message[key].id)
-  return ctx.i18n.t(creationDate[0]) + ' ' + creationDate[1] + ' ' + idAgeHelpLink
+  const createDate = getAge(ctx.message[key].id)
+  return ctx.i18n.t(createDate[0]) + ' ' + createDate[1] + ' ' + idAgeHelpLink
 }
 
 const getDateString = (ctx) => {
@@ -44,7 +44,11 @@ bot.help(ctx => {
 const treeify = require('./treeify.js')
 
 bot.on('message', ctx => {
-  if (ctx.message.chat.type === 'private') { handlePrivateChat(ctx) } else { handleGroupChat(ctx) }
+  if (ctx.message.chat.type === 'private') {
+    handlePrivateChat(ctx)
+  } else {
+    handleGroupChat(ctx)
+  }
 })
 
 function handleGroupChat (ctx) {
@@ -62,11 +66,16 @@ function handlePrivateChat (ctx) {
 
   // Render ORIGIN CHAT
   if (ctx.message.forward_from_chat !== undefined) {
-    renders.push(treeify.renderTree(ctx.message.forward_from_chat, ctx.i18n.t('origin_chat_header')))
+    renders.push(treeify.renderTree(
+      ctx.message.forward_from_chat, ctx.i18n.t('origin_chat_header')
+    ))
   }
 
   // Render ORIGIN ACCOUNT
-  if (ctx.message.forward_from !== undefined && ctx.message.from.id !== ctx.message.forward_from.id) {
+  if (
+    ctx.message.forward_from !== undefined &&
+    ctx.message.from.id !== ctx.message.forward_from.id
+  ) {
     let fwfrom = ctx.message.forward_from
 
     // Handle hidden account forwards:
@@ -79,7 +88,9 @@ function handlePrivateChat (ctx) {
     if (fwfrom.first_name !== undefined) {
       fwfrom['created'] = getAgeString(ctx, 'forward_from')
     }
-    renders.push(treeify.renderTree(fwfrom, ctx.i18n.t('forwarded_from_header')))
+    renders.push(
+      treeify.renderTree(fwfrom, ctx.i18n.t('forwarded_from_header'))
+    )
   }
 
   // Render PHÒTOS
@@ -158,7 +169,8 @@ function handlePrivateChat (ctx) {
   }
 
   // display hidden links
-  const hiddenLinks = (ctx.message.entities === undefined) ? [] : ctx.message.entities
+  const hiddenLinks =
+    (ctx.message.entities === undefined) ? [] : ctx.message.entities
     .filter(e => e.type === 'text_link')
     .map(e => e.url)
   if (hiddenLinks.length > 0) {
@@ -166,9 +178,13 @@ function handlePrivateChat (ctx) {
   }
 
   // only add the 'Message' part if it contains elements
-  if (Object.keys(msgInfo).length > 0) { renders.push(treeify.renderTree(msgInfo, ctx.i18n.t('message_header'))) }
+  if (Object.keys(msgInfo).length > 0) {
+    renders.push(treeify.renderTree(msgInfo, ctx.i18n.t('message_header')))
+  }
 
-  ctx.reply(renders.join('\n\n'), { parse_mode: 'HTML', disable_web_page_preview: true })
+  ctx.reply(renders.join('\n\n'), {
+    parse_mode: 'HTML', disable_web_page_preview: true
+  })
 
   // console.debug(JSON.stringify(ctx.message, null, 2))
 }

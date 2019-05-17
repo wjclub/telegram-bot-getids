@@ -1,4 +1,4 @@
-ages = require('./ages.json')
+const ages = require('./ages.json')
 
 const ids = Object.keys(ages)
 const nids = ids.map(e => parseInt(e))
@@ -32,7 +32,10 @@ const getDate = (id) => {
 
 const getAge = (id) => {
   const d = getDate(id)
-  return [d[0] < 0 ? 'older_than' : d[0] > 0 ? 'newer_than' : 'aprox', `${(d[1].getUTCMonth() + 1)}/${d[1].getUTCFullYear()}`]
+  return [
+    d[0] < 0 ? 'older_than' : d[0] > 0 ? 'newer_than' : 'aprox',
+    `${(d[1].getUTCMonth() + 1)}/${d[1].getUTCFullYear()}`
+  ]
 }
 
 module.exports = getAge
