@@ -38,8 +38,13 @@ group_chat_start: |
 
   <b>It's admins:</b>
   ${adminsStr}
+
+  ℹ️ <i>Commands are rate limited in group chats. I do not talk unless asked to do so.</i>
 admin_list: |
   <b>Admins:</b>
 
   ${adminsStr}
 this_chat_header: "This chat"
+admin_private_chat: "A 1-on-1 chat does not have any admins. This command only works in group chats."
+json_needs_reply: "Please reply to a specific message with this command."
+json_too_long: "The resulting json of the referenced message is too long to send it here. As referenced <a href=\"https://core.telegram.org/bots/api#message\">here</a>, a message may only contain up to 4096 characters."

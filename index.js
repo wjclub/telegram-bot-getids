@@ -82,7 +82,7 @@ const treeify = require('./treeify.js')
 
 bot.command('admins', async ctx => {
   if (ctx.chat.type === 'private' || ctx.chat.type === 'channel') {
-
+    ctx.replyWithHTML(ctx.i18n.t('admin_private_chat'))
   } else {
     const adminsStr = await getAdminsString(ctx.chat.id)
     await ctx.replyWithHTML(ctx.i18n.t('admin_list', {adminsStr}),{
@@ -91,7 +91,23 @@ bot.command('admins', async ctx => {
   }
 })
 
-
+bot.command('json', ctx => {
+  if (ctx.message.reply_to_message === undefined) {
+    ctx.replyWithHTML(ctx.i18n.t('json_needs_reply'))
+  } else {
+    const rtm = ctx.message.reply_to_message
+    const jsonStr = html.escape(JSON.stringify(rtm, null, 2))
+    if (jsonStr.length > 4096) {
+      ctx.replyWithHTML(ctx.i18n.t('json_too_long'), {
+        disable_web_page_preview: true
+      })
+    } else {
+      ctx.replyWithHTML('<code>'+jsonStr+'</code>', {
+        disable_web_page_preview: true
+      })
+    }
+  }
+})
 
 
 

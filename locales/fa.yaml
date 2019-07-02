@@ -27,3 +27,6 @@ inline_query_your_info_text: "اینجا رو بزن تا اطلاعاتت رو 
 user_hid_account: "این کاربر اطلاعات اکانتش رو توی تنظیمات حریم خصوصی تلگرام پنهان کرده، بنابراین در توانم نیست که چیزی درباره او بهت بگم."
 group_chat_start: "NO TRANSLATION AVAILABLE YET."
 admin_list: "NO TRANSLATION AVAILABLE YET."
+admin_private_chat: "NO TRANSLATION AVAILABLE YET."
+json_needs_reply: "NO TRANSLATION AVAILABLE YET."
+json_too_long: "NO TRANSLATION AVAILABLE YET."
