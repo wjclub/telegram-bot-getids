@@ -165,15 +165,15 @@ function handlePrivateChat (ctx) {
   ) {
     let fwfrom = ctx.message.forward_from
 
-    // Handle hidden account forwards:
-    if (fwfrom.id === -1001228946795) {
-      fwfrom = {
-        hidden: ctx.i18n.t('user_hid_account')
-      }
-    }
-
     if (fwfrom.first_name !== undefined) {
       fwfrom['created'] = getAgeString(ctx, 'forward_from')
+    }
+
+  }
+
+  if (ctx.message.forward_sender_name !== undefined) {
+    fwfrom = {
+      hidden: ctx.i18n.t('user_hid_account')
     }
     renders.push(
       treeify.renderTree(fwfrom, ctx.i18n.t('forwarded_from_header'))
