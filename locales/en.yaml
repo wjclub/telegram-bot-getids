@@ -1,4 +1,4 @@
-start: "Hello there human! I am a computer program that can chat (also known as a 'bot') and I can tell you somehting about you and the messages you send he.\n\nTry it out, just forward me some messages ;)\n\n<b>Note from the developers:</b>\nThis is a very early version of the bot. Therefore a few things (explainatory texts, etc.) are still missing. If you can code, here is the <a href=\"https://github.com/wjclub/telegram-bot-getids\">GitHub repo</a>. If you don't know how to program, you can still help. Just tell us @wjclub."
+start: "Hello there human! I am a computer program that can chat (also known as a 'bot') and I can tell you something about you and the messages you send he.\n\nTry it out, just forward me some messages ;)\n\n<b>Note from the developers:</b>\nThis is a very early version of the bot. Therefore a few things (explainatory texts, etc.) are still missing. If you can code, here is the <a href=\"https://github.com/wjclub/telegram-bot-getids\">GitHub repo</a>. If you don't know how to program, you can still help. Just tell us @wjclub."
 help: "Not implemented yet"
 idhelp: |
   <b>Account creation date</b>
@@ -36,7 +36,7 @@ group_chat_start: |
 
   ${chatInfoStr}
 
-  <b>It's admins:</b>
+  <b>Its admins:</b>
   ${adminsStr}
 
   ℹ️ <i>Commands are rate limited in group chats. I do not talk unless asked to do so.</i>
