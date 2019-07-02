@@ -1,8 +1,11 @@
 const Telegraf = require('telegraf')
-const bot = new Telegraf(process.env.BOT_TOKEN)
-
 const TelegrafI18n = require('telegraf-i18n')
+const rateLimit = require('telegraf-ratelimit')
 const path = require('path')
+const html = require('html-escaper')
+
+
+const bot = new Telegraf(process.env.BOT_TOKEN)
 
 const i18n = new TelegrafI18n({
   defaultLanguage: 'en',
@@ -11,6 +14,18 @@ const i18n = new TelegrafI18n({
 })
 
 bot.use(i18n.middleware())
+
+const limitConfig = {
+  window: 12000,
+  limit: 4,
+  keyGenerator: (ctx) => ctx.chat.id,
+  onLimitExceeded: (ctx, next) => {
+    // Only rate limit in group chats:
+    if (ctx.chat.type === 'private') next()
+  }
+}
+
+bot.use(rateLimit(limitConfig))
 
 const getAge = require('./idage.js')
 
