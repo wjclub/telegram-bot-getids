@@ -42,7 +42,29 @@ const getDateString = (ctx) => {
   return date.toUTCString()
 }
 
+const getAdminsString = async (chatId) => {
+  const admins = await bot.telegram.getChatAdministrators(chatId)
+  console.log(admins)
+  const resStr = admins
+    .map( a =>
+        (a.status === 'creator' ? '⭐️' : (a.user.is_bot ? '🤖' : '👤')) + ' '
+      + (a.user.username?'<a href="https://t.me/'+a.user.username+'">':'')
+      + html.escape(a.user.first_name+(a.user.last_name?' '+a.user.last_name:''))
+        .substring(0,25)
+      + (a.user.username?'</a>':'')
+    )
+    .join('\n')
+
+  console.log('AdminsString:',"'"+resStr+"'")
+  return resStr
+}
+
 bot.start(ctx => {
+  // Filter out group chats
+  if (ctx.message.chat.type !== 'private') {
+    return false;
+  }
+
   if (ctx.message.text === '/start idhelp') {
     ctx.reply(ctx.i18n.t('idhelp'), { parse_mode: 'HTML' })
   } else {
@@ -58,6 +80,22 @@ bot.help(ctx => {
 
 const treeify = require('./treeify.js')
 
+bot.command('admins', async ctx => {
+  if (ctx.chat.type === 'private' || ctx.chat.type === 'channel') {
+
+  } else {
+    const adminsStr = await getAdminsString(ctx.chat.id)
+    await ctx.replyWithHTML(ctx.i18n.t('admin_list', {adminsStr}),{
+      disable_web_page_preview: true
+    })
+  }
+})
+
+
+
+
+
+
 bot.on('message', ctx => {
   if (ctx.message.chat.type === 'private') {
     handlePrivateChat(ctx)
@@ -66,7 +104,25 @@ bot.on('message', ctx => {
   }
 })
 
-function handleGroupChat (ctx) {
+async function handleGroupChat (ctx) {
+  if (ctx.message.new_chat_members !== undefined) {
+    if (ctx.message.new_chat_members.some(m => m.username === botName)) {
+        // Bot was just added to group
+
+        const adminsStr =  await getAdminsString(ctx.chat.id)
+        console.log(adminsStr)
+
+        ctx.replyWithHTML(ctx.i18n.t('group_chat_start', {
+            chatInfoStr: treeify.renderTree(ctx.chat, ctx.i18n.t('this_chat_header')),
+            adminsStr
+          }),{
+          disable_web_page_preview: true
+        })
+    } else {
+        // Other new members
+        // TODO: For now, do nothing
+    }
+  }
 
 }
 
