@@ -109,6 +109,19 @@ bot.command('json', ctx => {
   }
 })
 
+bot.command('user', ctx => {
+  if (ctx.message.reply_to_message === undefined) {
+    ctx.replyWithHTML(ctx.i18n.t('user_needs_reply'))
+  } else {
+    const rtm = ctx.message.reply_to_message
+
+    rtm.from['created'] = getAgeString({message:rtm, i18n: ctx.i18n}, 'from')
+    ctx.replyWithHTML(treeify.renderTree(rtm.from, ctx.i18n.t('user_header')), {
+      disable_web_page_preview: true
+    })
+  }
+})
+
 
 
 

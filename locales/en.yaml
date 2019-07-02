@@ -45,6 +45,7 @@ admin_list: |
 
   ${adminsStr}
 this_chat_header: "This chat"
+user_header: "👤 User"
 admin_private_chat: "A 1-on-1 chat does not have any admins. This command only works in group chats."
 json_needs_reply: "Please reply to a specific message with this command."
 json_too_long: "The resulting json of the referenced message is too long to send it here. As referenced <a href=\"https://core.telegram.org/bots/api#message\">here</a>, a message may only contain up to 4096 characters."
