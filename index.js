@@ -1,8 +1,11 @@
 const Telegraf = require('telegraf')
-const bot = new Telegraf(process.env.BOT_TOKEN)
-
 const TelegrafI18n = require('telegraf-i18n')
+const rateLimit = require('telegraf-ratelimit')
 const path = require('path')
+const html = require('html-escaper')
+
+
+const bot = new Telegraf(process.env.BOT_TOKEN)
 
 const i18n = new TelegrafI18n({
   defaultLanguage: 'en',
@@ -11,6 +14,18 @@ const i18n = new TelegrafI18n({
 })
 
 bot.use(i18n.middleware())
+
+const limitConfig = {
+  window: 12000,
+  limit: 4,
+  keyGenerator: (ctx) => ctx.chat.id,
+  onLimitExceeded: (ctx, next) => {
+    // Only rate limit in group chats:
+    if (ctx.chat.type === 'private') next()
+  }
+}
+
+bot.use(rateLimit(limitConfig))
 
 const getAge = require('./idage.js')
 
@@ -27,7 +42,29 @@ const getDateString = (ctx) => {
   return date.toUTCString()
 }
 
+const getAdminsString = async (chatId) => {
+  const admins = await bot.telegram.getChatAdministrators(chatId)
+  console.log(admins)
+  const resStr = admins
+    .map( a =>
+        (a.status === 'creator' ? '⭐️' : (a.user.is_bot ? '🤖' : '👤')) + ' '
+      + (a.user.username?'<a href="https://t.me/'+a.user.username+'">':'')
+      + html.escape(a.user.first_name+(a.user.last_name?' '+a.user.last_name:''))
+        .substring(0,25)
+      + (a.user.username?'</a>':'')
+    )
+    .join('\n')
+
+  console.log('AdminsString:',"'"+resStr+"'")
+  return resStr
+}
+
 bot.start(ctx => {
+  // Filter out group chats
+  if (ctx.message.chat.type !== 'private') {
+    return false;
+  }
+
   if (ctx.message.text === '/start idhelp') {
     ctx.reply(ctx.i18n.t('idhelp'), { parse_mode: 'HTML' })
   } else {
@@ -43,6 +80,51 @@ bot.help(ctx => {
 
 const treeify = require('./treeify.js')
 
+bot.command('admins', async ctx => {
+  if (ctx.chat.type === 'private' || ctx.chat.type === 'channel') {
+    ctx.replyWithHTML(ctx.i18n.t('admin_private_chat'))
+  } else {
+    const adminsStr = await getAdminsString(ctx.chat.id)
+    await ctx.replyWithHTML(ctx.i18n.t('admin_list', {adminsStr}),{
+      disable_web_page_preview: true
+    })
+  }
+})
+
+bot.command('json', ctx => {
+  if (ctx.message.reply_to_message === undefined) {
+    ctx.replyWithHTML(ctx.i18n.t('json_needs_reply'))
+  } else {
+    const rtm = ctx.message.reply_to_message
+    const jsonStr = html.escape(JSON.stringify(rtm, null, 2))
+    if (jsonStr.length > 4096) {
+      ctx.replyWithHTML(ctx.i18n.t('json_too_long'), {
+        disable_web_page_preview: true
+      })
+    } else {
+      ctx.replyWithHTML('<code>'+jsonStr+'</code>', {
+        disable_web_page_preview: true
+      })
+    }
+  }
+})
+
+bot.command('user', ctx => {
+  if (ctx.message.reply_to_message === undefined) {
+    ctx.replyWithHTML(ctx.i18n.t('user_needs_reply'))
+  } else {
+    const rtm = ctx.message.reply_to_message
+
+    rtm.from['created'] = getAgeString({message:rtm, i18n: ctx.i18n}, 'from')
+    ctx.replyWithHTML(treeify.renderTree(rtm.from, ctx.i18n.t('user_header')), {
+      disable_web_page_preview: true
+    })
+  }
+})
+
+
+
+
 bot.on('message', ctx => {
   if (ctx.message.chat.type === 'private') {
     handlePrivateChat(ctx)
@@ -51,7 +133,25 @@ bot.on('message', ctx => {
   }
 })
 
-function handleGroupChat (ctx) {
+async function handleGroupChat (ctx) {
+  if (ctx.message.new_chat_members !== undefined) {
+    if (ctx.message.new_chat_members.some(m => m.username === botName)) {
+        // Bot was just added to group
+
+        const adminsStr =  await getAdminsString(ctx.chat.id)
+        console.log(adminsStr)
+
+        ctx.replyWithHTML(ctx.i18n.t('group_chat_start', {
+            chatInfoStr: treeify.renderTree(ctx.chat, ctx.i18n.t('this_chat_header')),
+            adminsStr
+          }),{
+          disable_web_page_preview: true
+        })
+    } else {
+        // Other new members
+        // TODO: For now, do nothing
+    }
+  }
 
 }
 
@@ -78,15 +178,15 @@ function handlePrivateChat (ctx) {
   ) {
     let fwfrom = ctx.message.forward_from
 
-    // Handle hidden account forwards:
-    if (fwfrom.id === -1001228946795) {
-      fwfrom = {
-        hidden: ctx.i18n.t('user_hid_account')
-      }
-    }
-
     if (fwfrom.first_name !== undefined) {
       fwfrom['created'] = getAgeString(ctx, 'forward_from')
+    }
+
+  }
+
+  if (ctx.message.forward_sender_name !== undefined) {
+    fwfrom = {
+      hidden: ctx.i18n.t('user_hid_account')
     }
     renders.push(
       treeify.renderTree(fwfrom, ctx.i18n.t('forwarded_from_header'))

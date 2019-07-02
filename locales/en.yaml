@@ -26,3 +26,26 @@ poll_header: "📊 Poll"
 inline_query_your_info_header: "👤 You"
 inline_query_your_info_text: "Click here to send your info"
 user_hid_account: "This user hid his account information in Telegram's privacy settings, so I can't tell you anything about him."
+group_chat_start: |
+  GetIDsBot - Get Meta information in Telegram
+
+  <b>Available commands:</b>
+  » <code>/admins</code> to get a list of all current admins.
+  » <code>/json</code> in reply to a message to get it's bot api json variant.
+  » <code>/user</code> in reply to a message for info about that user.
+
+  ${chatInfoStr}
+
+  <b>It's admins:</b>
+  ${adminsStr}
+
+  ℹ️ <i>Commands are rate limited in group chats. I do not talk unless asked to do so.</i>
+admin_list: |
+  <b>Admins:</b>
+
+  ${adminsStr}
+this_chat_header: "This chat"
+user_header: "👤 User"
+admin_private_chat: "A 1-on-1 chat does not have any admins. This command only works in group chats."
+json_needs_reply: "Please reply to a specific message with this command."
+json_too_long: "The resulting json of the referenced message is too long to send it here. As referenced <a href=\"https://core.telegram.org/bots/api#message\">here</a>, a message may only contain up to 4096 characters."
