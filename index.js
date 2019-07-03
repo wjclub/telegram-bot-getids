@@ -18,7 +18,7 @@ bot.use(i18n.middleware())
 const limitConfig = {
   window: 12000,
   limit: 4,
-  keyGenerator: (ctx) => ctx.chat.id,
+  keyGenerator: (ctx) => (ctx.chat.id || ctx.from.id || 0),
   onLimitExceeded: (ctx, next) => {
     // Only rate limit in group chats:
     if (ctx.chat.type === 'private') next()
