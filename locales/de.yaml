@@ -1,0 +1,51 @@
+start: "Hallo lieber Mitbürger! Ich bin ein Computerprogramm, das kommunizieren kann (auch bekannt als 'Bot') und jegliche geheimen Informationen über Nachrichten preisgibt, die du an mich weiterleitest.\n\nProbier's aus, leite ein paar Nachrichten an mich weiter ;)\n\n<b>Hinweis der Entwickler:</b>\nDer Bot befindet sich noch im Anfangsstadium der Entwicklung. Einige Sachen wie Hilfetexte fehlen noch. Wenn du programmieren kannst, werfe einen Blick in die <a href=\"https://github.com/wjclub/telegram-bot-getids\">GitHub repo</a>. Wenn du anderweitig behilflich sein willst, melde dich bei @wjclub."
+help: "Hilfe noch nicht verfügbar"
+idhelp: |
+  <b>Erstellungsdatum des Accounts</b>
+
+  <b>Wie es funktioniert</b>
+  Um @Superuser27 (übersetzt) zu zitieren: Interpolation zwischen Account IDs, deren Erstellungsdatum bekannt ist.
+  Der Bot hat eine große Liste an Account IDs mit deren Erstellungsdatum, mit denen sich eine unbekannte ID vergleichen lässt.
+
+  <b>Mein Account Erstellungsdatum ist falsch</b>
+  Kann sein. Deshalb klatschen wir ein "~" davor. Wir können nur raten und häufig unterscheiden sich die zur Verfügung stehenden IDs gewaltig vom Zeitpunkt der Erstellung, was nur zu einem Datenchaos führen kann. Wenn man's aber als mathematisches Kunststück betrachtet, könnte es auch richtig sein.
+older_than: "älter als"
+newer_than: "neuer als"
+aprox: "~"
+you_header: "👤 Du"
+me_header: "👤 Ich"
+origin_chat_header: "💬 Ursprünglicher Chat"
+forwarded_from_header: "👤 Weitergeleitet von"
+image_header: "🖼 Bild"
+audio_header: "🎧 Audio"
+sticker_header: "😃 Sticker"
+document_header: "📎 Datei"
+video_header: "🎞 Video"
+message_header: "📃 Nachricht"
+poll_header: "📊 Poll"
+inline_query_your_info_header: "👤 Du"
+inline_query_your_info_text: "Klicke hier um deine Info zu sender"
+user_hid_account: "Dieser Benutzer hat seine Accountinformation in den Einstellungen von Telegram verbergen lassen, daher kann ich nichts über ihn herausfinden."
+group_chat_start: |
+  GetIDsBot - Meta Informationen in Telegram
+
+  <b>Verfügbare Befehle:</b>
+  » <code>/admins</code> um eine Liste aller Admins zu bekommen.
+  » <code>/json</code> als Antwort auf eine Nachricht um die Information im JSON-Format zu bekommen.
+  » <code>/user</code> als Antwort auf eine Nachricht um an Informationen des Benutzers zu gelangen.
+
+  ${chatInfoStr}
+
+  <b>Admins:</b>
+  ${adminsStr}
+
+  ℹ️ <i>Befehle sind in Gruppenchats begrenzt. Ohne expliziter Aufforderung werde ich nicht reden.</i>
+admin_list: |
+  <b>Admins:</b>
+
+  ${adminsStr}
+this_chat_header: "Dieser Chat"
+user_header: "👤 Benutzer"
+admin_private_chat: "Ein 1-zu-1 Chat hat keine Admins. Dieser Befehl funktioniert nur in Gruppenchats."
+json_needs_reply: "Um den Befehl nutzen zu können, musst du auf eine spezifische Nachricht antworten."
+json_too_long: "Das erzeugte JSON zur bezogenen Nachricht ist zu lang um hier geschickt werden zu können. Laut <a href=\"https://core.telegram.org/bots/api#message\">Telegram</a> dürfen Nachrichten maximal 4096 Zeichen beinhalten."
