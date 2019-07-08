@@ -188,7 +188,9 @@ function handlePrivateChat (ctx) {
     if (fwfrom.first_name !== undefined) {
       fwfrom['created'] = getAgeString(ctx, 'forward_from')
     }
-
+    renders.push(
+      treeify.renderTree(fwfrom, ctx.i18n.t('forwarded_from_header'))
+    )
   }
 
   if (ctx.message.forward_sender_name !== undefined) {
