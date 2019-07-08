@@ -28,7 +28,7 @@ const limitConfig = {
   },
   onLimitExceeded: (ctx, next) => {
     // Only rate limit in group chats:
-    if (ctx.chat.type === 'private') next()
+    if (ctx.chat !== undefined && ctx.chat.type === 'private') next()
   }
 }
 
