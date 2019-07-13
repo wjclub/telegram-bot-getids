@@ -4,6 +4,16 @@ const rateLimit = require('telegraf-ratelimit')
 const path = require('path')
 const html = require('html-escaper')
 
+const BOT_TOKEN = process.env.BOT_TOKEN
+if (BOT_TOKEN === undefined) {
+  console.error('ERROR: You need to provide an environment variable called BOT_TOKEN with the telegram bot token.')
+  process.exit(1)
+}
+if (BOT_TOKEN.split(':').length !== 2 || BOT_TOKEN.split(':')[1].length !== 35) {
+  console.error('ERROR: The environment variable BOT_TOKEN seems to be malformatted.')
+  process.exit(1)
+}
+
 const bot = new Telegraf(process.env.BOT_TOKEN)
 
 const i18n = new TelegrafI18n({
