@@ -205,7 +205,6 @@ function handlePrivateChat (ctx) {
 
     // Remove all file_ids, as they vary between bots
     delete sticker.thumb
-163125583:AAEZsQz1YmeT9v0zdlLWzCa4TFlL7s-2THg
     renders.push(treeify.renderTree(sticker, ctx.i18n.t('sticker_header')))
   }
 
