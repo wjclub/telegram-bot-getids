@@ -18,7 +18,7 @@ function renderLines (object, depth = 0, prefix = [], parentKey = '') {
       var text = renderPrefix(prefix, isLast) + (isArr ? '' : `<b>${key}:</b> `)
 
       // render value
-      let valString = escapeHtml(object[key].toString())
+      const valString = escapeHtml(object[key].toString())
 
       if (key === 'username') {
         text += '<a href="https://t.me/' + object[key] + '">' +

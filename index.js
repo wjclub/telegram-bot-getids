@@ -4,7 +4,6 @@ const rateLimit = require('telegraf-ratelimit')
 const path = require('path')
 const html = require('html-escaper')
 
-
 const bot = new Telegraf(process.env.BOT_TOKEN)
 
 const i18n = new TelegrafI18n({
@@ -19,12 +18,7 @@ const limitConfig = {
   window: 12000,
   limit: 4,
   keyGenerator: (ctx) => {
-    if (ctx.chat !== undefined)
-      return ctx.chat.id
-    else if (ctx.from !== undefined)
-      return ctx.from.id
-    else
-      return 0
+    if (ctx.chat !== undefined) { return ctx.chat.id } else if (ctx.from !== undefined) { return ctx.from.id } else { return 0 }
   },
   onLimitExceeded: (ctx, next) => {
     // Only rate limit in group chats:
@@ -53,23 +47,23 @@ const getAdminsString = async (chatId) => {
   const admins = await bot.telegram.getChatAdministrators(chatId)
   console.log(admins)
   const resStr = admins
-    .map( a =>
-        (a.status === 'creator' ? '⭐️' : (a.user.is_bot ? '🤖' : '👤')) + ' '
-      + (a.user.username?'<a href="https://t.me/'+a.user.username+'">':'')
-      + html.escape(a.user.first_name+(a.user.last_name?' '+a.user.last_name:''))
-        .substring(0,25)
-      + (a.user.username?'</a>':'')
+    .map(a =>
+      (a.status === 'creator' ? '⭐️' : (a.user.is_bot ? '🤖' : '👤')) + ' ' +
+      (a.user.username ? '<a href="https://t.me/' + a.user.username + '">' : '') +
+      html.escape(a.user.first_name + (a.user.last_name ? ' ' + a.user.last_name : ''))
+        .substring(0, 25) +
+      (a.user.username ? '</a>' : '')
     )
     .join('\n')
 
-  console.log('AdminsString:',"'"+resStr+"'")
+  console.log('AdminsString:', "'" + resStr + "'")
   return resStr
 }
 
 bot.start(ctx => {
   // Filter out group chats
   if (ctx.message.chat.type !== 'private') {
-    return false;
+    return false
   }
 
   if (ctx.message.text === '/start idhelp') {
@@ -92,7 +86,7 @@ bot.command('admins', async ctx => {
     ctx.replyWithHTML(ctx.i18n.t('admin_private_chat'))
   } else {
     const adminsStr = await getAdminsString(ctx.chat.id)
-    await ctx.replyWithHTML(ctx.i18n.t('admin_list', {adminsStr}),{
+    await ctx.replyWithHTML(ctx.i18n.t('admin_list', { adminsStr }), {
       disable_web_page_preview: true
     })
   }
@@ -109,7 +103,7 @@ bot.command('json', ctx => {
         disable_web_page_preview: true
       })
     } else {
-      ctx.replyWithHTML('<code>'+jsonStr+'</code>', {
+      ctx.replyWithHTML('<code>' + jsonStr + '</code>', {
         disable_web_page_preview: true
       })
     }
@@ -122,15 +116,12 @@ bot.command('user', ctx => {
   } else {
     const rtm = ctx.message.reply_to_message
 
-    rtm.from['created'] = getAgeString({message:rtm, i18n: ctx.i18n}, 'from')
+    rtm.from['created'] = getAgeString({ message: rtm, i18n: ctx.i18n }, 'from')
     ctx.replyWithHTML(treeify.renderTree(rtm.from, ctx.i18n.t('user_header')), {
       disable_web_page_preview: true
     })
   }
 })
-
-
-
 
 bot.on('message', ctx => {
   if (ctx.message.chat.type === 'private') {
@@ -143,23 +134,22 @@ bot.on('message', ctx => {
 async function handleGroupChat (ctx) {
   if (ctx.message.new_chat_members !== undefined) {
     if (ctx.message.new_chat_members.some(m => m.username === botName)) {
-        // Bot was just added to group
+      // Bot was just added to group
 
-        const adminsStr =  await getAdminsString(ctx.chat.id)
-        console.log(adminsStr)
+      const adminsStr = await getAdminsString(ctx.chat.id)
+      console.log(adminsStr)
 
-        ctx.replyWithHTML(ctx.i18n.t('group_chat_start', {
-            chatInfoStr: treeify.renderTree(ctx.chat, ctx.i18n.t('this_chat_header')),
-            adminsStr
-          }),{
-          disable_web_page_preview: true
-        })
+      ctx.replyWithHTML(ctx.i18n.t('group_chat_start', {
+        chatInfoStr: treeify.renderTree(ctx.chat, ctx.i18n.t('this_chat_header')),
+        adminsStr
+      }), {
+        disable_web_page_preview: true
+      })
     } else {
-        // Other new members
-        // TODO: For now, do nothing
+      // Other new members
+      // TODO: For now, do nothing
     }
   }
-
 }
 
 function handlePrivateChat (ctx) {
@@ -183,7 +173,7 @@ function handlePrivateChat (ctx) {
     ctx.message.forward_from !== undefined &&
     ctx.message.from.id !== ctx.message.forward_from.id
   ) {
-    let fwfrom = ctx.message.forward_from
+    const fwfrom = ctx.message.forward_from
 
     if (fwfrom.first_name !== undefined) {
       fwfrom['created'] = getAgeString(ctx, 'forward_from')
@@ -215,7 +205,7 @@ function handlePrivateChat (ctx) {
 
     // Remove all file_ids, as they vary between bots
     delete sticker.thumb
-
+163125583:AAEZsQz1YmeT9v0zdlLWzCa4TFlL7s-2THg
     renders.push(treeify.renderTree(sticker, ctx.i18n.t('sticker_header')))
   }
 
@@ -280,8 +270,8 @@ function handlePrivateChat (ctx) {
   // display hidden links
   const hiddenLinks =
     (ctx.message.entities === undefined) ? [] : ctx.message.entities
-    .filter(e => e.type === 'text_link')
-    .map(e => e.url)
+      .filter(e => e.type === 'text_link')
+      .map(e => e.url)
   if (hiddenLinks.length > 0) {
     msgInfo['urls'] = hiddenLinks
   }
