@@ -13,7 +13,7 @@
     "html-escaper": "^2.0.0",
     "iso-lang-codes": "^2.0.0",
     "telegraf": "^3.32.0",
-    "telegraf-i18n": "^6.5.0",
+    "telegraf-i18n": "^6.6.0",
     "telegraf-ratelimit": "^2.0.0"
   },
   "devDependencies": {
