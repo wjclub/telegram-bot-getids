@@ -1,4 +1,5 @@
-start: "Hello there human! I am a computer program that can chat (also known as a 'bot') and I can tell you something about you and the messages you send me.\n\nTry it out, just forward me some messages ;)\n\n<b>Note from the developers:</b>\nThis is a very early version of the bot. Therefore a few things (explainatory texts, etc.) are still missing. If you can code, here is the <a href=\"https://github.com/wjclub/telegram-bot-getids\">GitHub repo</a>. If you don't know how to program, you can still help. Just tell us @wjclub."
+start: "Hello${comma} ${username}! I am a computer program that can chat (also known as a 'bot') and I can tell you something about you and the messages you send me.\n\nTry it out, just forward me some messages ;)\n\n<b>Note from the developers:</b>\nThis is a very early version of the bot. Therefore a few things (explainatory texts, etc.) are still missing. If you can code, here is the <a href=\"https://github.com/wjclub/telegram-bot-getids\">GitHub repo</a>. If you don't know how to program, you can still help. Just tell us @wjclub."
+human: "there human"
 help: "Not implemented yet"
 idhelp: |
   <b>Account creation date</b>
