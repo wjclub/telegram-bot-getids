@@ -42,12 +42,6 @@ const getAge = require('./idage.js')
 
 let botName = ''
 
-const sanitize = (str) => {
-  return str.replace(/</img, '&lt;')
-    .replace(/>/img, '&gt;')
-    .replace(/&/img, '&amp;')
-}
-
 const getAgeString = (ctx, key) => {
   const idAgeHelpLink = `<a href="https://t.me/${botName}?start=idhelp">(?)</a>`
   const createDate = getAge(ctx.message[key].id)
@@ -91,7 +85,7 @@ bot.start(ctx => {
     let comma = ''
     let username
     if (userIdentity) {
-      username = sanitize(userIdentity);
+      username = html.escape(userIdentity);
       comma = ','
     } else {
       username = ctx.i18n.t('human')
