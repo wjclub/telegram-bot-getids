@@ -1,4 +1,5 @@
-start: "Hallo lieber Mitbürger! Ich bin ein Computerprogramm, das kommunizieren kann (auch bekannt als 'Bot') und jegliche geheimen Informationen über Nachrichten preisgibt, die du an mich weiterleitest.\n\nProbier's aus, leite ein paar Nachrichten an mich weiter ;)\n\n<b>Hinweis der Entwickler:</b>\nDer Bot befindet sich noch im Anfangsstadium der Entwicklung. Einige Sachen wie Hilfetexte fehlen noch. Wenn du programmieren kannst, werfe einen Blick in die <a href=\"https://github.com/wjclub/telegram-bot-getids\">GitHub repo</a>. Wenn du anderweitig behilflich sein willst, melde dich bei @wjclub."
+start: "Hallo${comma} ${username}! Ich bin ein Computerprogramm, das kommunizieren kann (auch bekannt als 'Bot') und jegliche geheimen Informationen über Nachrichten preisgibt, die du an mich weiterleitest.\n\nProbier's aus, leite ein paar Nachrichten an mich weiter ;)\n\n<b>Hinweis der Entwickler:</b>\nDer Bot befindet sich noch im Anfangsstadium der Entwicklung. Einige Sachen wie Hilfetexte fehlen noch. Wenn du programmieren kannst, werfe einen Blick in die <a href=\"https://github.com/wjclub/telegram-bot-getids\">GitHub repo</a>. Wenn du anderweitig behilflich sein willst, melde dich bei @wjclub."
+human: "lieber Mitbürger"
 help: "Hilfe noch nicht verfügbar"
 idhelp: |
   <b>Erstellungsdatum des Accounts</b>

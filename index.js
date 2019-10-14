@@ -14,7 +14,7 @@ if (BOT_TOKEN.split(':').length !== 2 || BOT_TOKEN.split(':')[1].length !== 35) 
   process.exit(1)
 }
 
-const bot = new Telegraf(process.env.BOT_TOKEN)
+const bot = new Telegraf(BOT_TOKEN)
 
 const i18n = new TelegrafI18n({
   defaultLanguage: 'en',
@@ -79,9 +79,22 @@ bot.start(ctx => {
   if (ctx.message.text === '/start idhelp') {
     ctx.reply(ctx.i18n.t('idhelp'), { parse_mode: 'HTML' })
   } else {
-    let msgText = ctx.i18n.t('start')
+    // username may be not defined, first_name may be empty
+    const userIdentity = ctx.chat.username || ctx.chat.first_name
+
+    let comma = ''
+    let username
+    if (userIdentity) {
+      username = html.escape(userIdentity);
+      comma = ','
+    } else {
+      username = ctx.i18n.t('human')
+    }
+
+    let msgText = ctx.i18n.t('start', { comma, username })
+
     msgText += '\n\n' + treeify.renderTree(ctx.from, ctx.i18n.t('you_header'))
-    ctx.reply(msgText, { parse_mode: 'HTML' })
+    ctx.replyWithHTML(msgText)
   }
 })
 
