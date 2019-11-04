@@ -61,7 +61,7 @@ const getAdminsString = async (chatId) => {
       (a.status === 'creator' ? '⭐️' : (a.user.is_bot ? '🤖' : '👤')) + ' ' +
       (a.user.username ? '<a href="https://t.me/' + a.user.username + '">' : '') +
       html.escape(a.user.first_name + (a.user.last_name ? ' ' + a.user.last_name : ''))
-        .substring(0, 25) +
+        .substring(0, 35) +
       (a.user.username ? '</a>' : '')
     )
     .join('\n')
@@ -85,7 +85,7 @@ bot.start(ctx => {
     let comma = ''
     let username
     if (userIdentity) {
-      username = html.escape(userIdentity);
+      username = html.escape(userIdentity)
       comma = ','
     } else {
       username = ctx.i18n.t('human')
@@ -139,7 +139,7 @@ bot.command('user', ctx => {
   } else {
     const rtm = ctx.message.reply_to_message
 
-    rtm.from['created'] = getAgeString({ message: rtm, i18n: ctx.i18n }, 'from')
+    rtm.from.created = getAgeString({ message: rtm, i18n: ctx.i18n }, 'from')
     ctx.replyWithHTML(treeify.renderTree(rtm.from, ctx.i18n.t('user_header')), {
       disable_web_page_preview: true
     })
@@ -180,7 +180,7 @@ function handlePrivateChat (ctx) {
 
   // Render CURRENT USER
   if (ctx.message.from !== undefined) {
-    ctx.from['created'] = getAgeString(ctx, 'from')
+    ctx.from.created = getAgeString(ctx, 'from')
     renders.push(treeify.renderTree(ctx.from, ctx.i18n.t('you_header')))
   }
 
@@ -199,7 +199,7 @@ function handlePrivateChat (ctx) {
     const fwfrom = ctx.message.forward_from
 
     if (fwfrom.first_name !== undefined) {
-      fwfrom['created'] = getAgeString(ctx, 'forward_from')
+      fwfrom.created = getAgeString(ctx, 'forward_from')
     }
     renders.push(
       treeify.renderTree(fwfrom, ctx.i18n.t('forwarded_from_header'))
@@ -207,7 +207,7 @@ function handlePrivateChat (ctx) {
   }
 
   if (ctx.message.forward_sender_name !== undefined) {
-    fwfrom = {
+    const fwfrom = {
       hidden: ctx.i18n.t('user_hid_account')
     }
     renders.push(
@@ -280,13 +280,13 @@ function handlePrivateChat (ctx) {
   if (ctx.message.forward_from_message_id !== undefined) {
     const msgId = ctx.message.forward_from_message_id
     const fwdFrom = ctx.message.forward_from_chat
-    msgInfo['message_id'] = (fwdFrom.username === undefined) ? msgId
+    msgInfo.message_id = (fwdFrom.username === undefined) ? msgId
       : `<a href="https://t.me/${fwdFrom.username}/${msgId}">${msgId}</a>`
   }
 
   // add original sending date of message
   if (ctx.message.forward_date !== undefined) {
-    msgInfo['forward_date'] = getDateString(ctx)
+    msgInfo.forward_date = getDateString(ctx)
   }
 
   // display hidden links
@@ -295,7 +295,7 @@ function handlePrivateChat (ctx) {
       .filter(e => e.type === 'text_link')
       .map(e => e.url)
   if (hiddenLinks.length > 0) {
-    msgInfo['urls'] = hiddenLinks
+    msgInfo.urls = hiddenLinks
   }
 
   // only add the 'Message' part if it contains elements
@@ -313,7 +313,7 @@ function handlePrivateChat (ctx) {
 bot.on('inline_query', (ctx) => {
   const creationDate = getAge(ctx.from.id)
   const ageString = ctx.i18n.t(creationDate[0]) + ' ' + creationDate[1]
-  ctx.from['created'] = ageString
+  ctx.from.created = ageString
   const msgText = treeify.renderTree(ctx.from, ctx.i18n.t('me_header'))
   const result = [{
     type: 'article',
