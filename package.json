@@ -10,7 +10,7 @@
   "author": "Jonas Zohren",
   "license": "MIT",
   "dependencies": {
-    "html-escaper": "^2.0.1",
+    "html-escaper": "^3.0.0",
     "iso-lang-codes": "^2.0.0",
     "telegraf": "^3.38.0",
     "telegraf-i18n": "^6.6.0",
