@@ -1,0 +1,52 @@
+start: "Ciao${comma} ${username}! Sono un programma che può chattare (conosciuto anche come 'bot') e posso dirti qualcosa riguardo a te e i messaggi che mi mandi.\n\nProva, basta che mi inoltri un messaggio ;)\n\n<b>Nota dagli sviluppatori:</b>\nQuesta è ancora una versione iniziale del bot. Quindi alcune cose (spiegazioni, etc.) sono ancora mancanti. Se sai programmare, qui c'è il <a href=\"https://github.com/wjclub/telegram-bot-getids\">repository GitHub</a>. Se non sai come programmare, puoi comunque aiutare. Contattaci a @wjclub."
+human: "utente"
+help: "Non ancora implementato"
+idhelp: |
+  <b>Data creazione account</b>
+
+  <b>Come funziona</b>
+  Citando @Superuser27: Interpolazione di date di registrazione conosciute di certi ID.
+  Il bot ha una grande lista di ID di account e la loro data di creazione associata (conosciuta) e confronta il tuo ID con questa lista.
+
+  <b>La mia data di creazione è sbagliata</b>
+  Certo. Ecco perché c'è "~" davanti. È solo un tentativo e spesso gli ID distribuiti allo stesso momento sono molto diversi uno dall'altro, risultando in un groviglio di dati. Quindi considera la data come una cosa approssimativa.
+older_than: "più vecchio di"
+newer_than: "più nuovo di"
+aprox: "~"
+you_header: "👤 Tu"
+me_header: "👤 Io"
+origin_chat_header: "💬 Chat di origine"
+forwarded_from_header: "👤 Inoltrato da"
+image_header: "🖼 Immagine"
+audio_header: "🎧 Audio"
+sticker_header: "😃 Sticker"
+document_header: "📎 File"
+video_header: "🎞 Video"
+message_header: "📃 Messaggio"
+poll_header: "📊 Sondaggio"
+inline_query_your_info_header: "👤 Tu"
+inline_query_your_info_text: "Clicca qui per inviare le tue info"
+user_hid_account: "Questo utente ha nascosto il suo account nelle impostazioni sulla privacy di Telegram, quindi non posso dirti nulla a riguardo."
+group_chat_start: |
+  GetIDsBot - Ottieni informationi meta su Telegram
+
+  <b>Comandi disponibili:</b>
+  » <code>/admins</code> per ottenere una lista degli amministratori attuali.
+  » <code>/json</code> in risposta ad un messaggio per ottenerne la versione json api per bot.
+  » <code>/user</code> in risposta ad un messaggio per informazioni sull'utente.
+
+  ${chatInfoStr}
+
+  <b>Amministratori:</b>
+  ${adminsStr}
+
+  ℹ️ <i>I comandi sono limitati nei gruppi. Non parlo a meno che non mi sia richiesto.</i>
+admin_list: |
+  <b>Amministratori:</b>
+
+  ${adminsStr}
+this_chat_header: "Questa chat"
+user_header: "👤 Utente"
+admin_private_chat: "Una chat privata non ha amministratori. Questo comando funziona solo nei gruppi."
+json_needs_reply: "Usa questo comando in risposta ad un messaggio specifico."
+json_too_long: "Il json risultante dal messaggio è troppo lungo per essere inviato. Come spiegato <a href=\"https://core.telegram.org/bots/api#message\">qui</a>, un messaggio può contenere fino a 4096 caratteri."
