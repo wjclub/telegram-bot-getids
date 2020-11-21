@@ -17,6 +17,6 @@
     "telegraf-ratelimit": "^2.0.0"
   },
   "devDependencies": {
-    "standard": "^16.0.2"
+    "standard": "^16.0.3"
   }
 }
