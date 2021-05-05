@@ -11,7 +11,7 @@
   "license": "MIT",
   "dependencies": {
     "html-escaper": "^2.0.2",
-    "iso-lang-codes": "^2.0.0",
+    "iso-lang-codes": "^2.1.1",
     "telegraf": "^3.38.0",
     "telegraf-i18n": "^6.6.0",
     "telegraf-ratelimit": "^2.0.0"
