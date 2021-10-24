@@ -1,0 +1,6 @@
+node_modules
+*.md
+.github
+captain-definition
+.gitlab-ci.yml
+LICENSE

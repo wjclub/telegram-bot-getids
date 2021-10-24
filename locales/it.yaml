@@ -49,4 +49,4 @@ this_chat_header: "Questa chat"
 user_header: "👤 Utente"
 admin_private_chat: "Una chat privata non ha amministratori. Questo comando funziona solo nei gruppi."
 json_needs_reply: "Usa questo comando in risposta ad un messaggio specifico."
-json_too_long: "Il json risultante dal messaggio è troppo lungo per essere inviato. Come spiegato <a href=\"https://core.telegram.org/bots/api#message\">qui</a>, un messaggio può contenere fino a 4096 caratteri."
+json_too_long: 'Il json risultante dal messaggio è troppo lungo per essere inviato. Come spiegato <a href="https://core.telegram.org/bots/api#message">qui</a>, un messaggio può contenere fino a 4096 caratteri.'

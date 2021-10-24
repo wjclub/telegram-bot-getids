@@ -49,4 +49,4 @@ this_chat_header: "Dieser Chat"
 user_header: "👤 Benutzer"
 admin_private_chat: "Ein 1-zu-1 Chat hat keine Admins. Dieser Befehl funktioniert nur in Gruppenchats."
 json_needs_reply: "Um den Befehl nutzen zu können, musst du auf eine spezifische Nachricht antworten."
-json_too_long: "Das erzeugte JSON zur bezogenen Nachricht ist zu lang um hier geschickt werden zu können. Laut <a href=\"https://core.telegram.org/bots/api#message\">Telegram</a> dürfen Nachrichten maximal 4096 Zeichen beinhalten."
+json_too_long: 'Das erzeugte JSON zur bezogenen Nachricht ist zu lang um hier geschickt werden zu können. Laut <a href="https://core.telegram.org/bots/api#message">Telegram</a> dürfen Nachrichten maximal 4096 Zeichen beinhalten.'

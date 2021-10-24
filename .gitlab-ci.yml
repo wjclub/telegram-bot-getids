@@ -1,89 +1,9 @@
 stages:
-  - review
-  - staging
-  - production
+  - "lint"
 
-
-deploy_review:
-  stage: review
-  environment:
-    name: review/$CI_COMMIT_REF_NAME
-    url: https://t.me/IDontknow
-  only:
-    - branches
-  except:
-    - master
+check formatting:
+  stage: "lint"
+  image: "docker.io/node:16-alpine"
   script:
-    - echo "Deploy a review app"
-
-Deploy staging version:
-  stage: staging
-  environment:
-    name: staging
-    url: https://t.me/GetIDsStagingBot
-    on_stop: Stop staging version
-  only:
-  - master
-  tags:
-  - sh14
-  variables:
-    SERVICE_FILE: telegram-bot-getids-staging.ini
-    SERVICE_NAME: telegram-bot-getids-staging
-    NODE_PATH: /usr/bin/node
-    DIRECTORY: /home/sh14/telegram-bot-getids-staging
-  script:
-  - cp supervisord-service.ini $SERVICE_FILE
-  - sed -i "s#VAR_SERVICE_NAME#$SERVICE_NAME#g" $SERVICE_FILE
-  - sed -i "s#VAR_NODE_PATH#$NODE_PATH#g" $SERVICE_FILE
-  - sed -i "s#VAR_DIRECTORY#$DIRECTORY#g" $SERVICE_FILE
-  - sed -i "s#VAR_BOT_TOKEN#$BOT_ID_STAGING:$BOT_TOKEN_STAGING#g" $SERVICE_FILE
-  - mkdir -p $SERVICE_DIR_STAGING
-  - mv $SERVICE_FILE $SERVICE_DIR_STAGING$SERVICE_FILE
-  - rm -rf $DIRECTORY
-  - mkdir -p $DIRECTORY
-  - mv $(pwd)/* "$DIRECTORY"
-  - cd "$DIRECTORY"
-  - npm update
-  - supervisorctl reread && supervisorctl update && supervisorctl status
-
-Stop staging version:
-  stage: staging
-  tags:
-  - sh14
-  when: manual
-  environment:
-    name: staging
-    action: stop
-  variables:
-    SERVICE_FILE: telegram-bot-getids-staging.ini
-    SERVICE_NAME: telegram-bot-getids-staging
-    DIRECTORY: /home/sh14/telegram-bot-getids-staging
-  script:
-  - rm $SERVICE_DIR_STAGING$SERVICE_FILE
-  - supervisorctl reread && supervisorctl update && supervisorctl status
-  - rm -rf $DIRECTORY
-
-Deploy to production:
-  stage: production
-  when: manual
-  dependencies:
-  - Deploy staging version
-  environment:
-    name: production
-    url: https://t.me/GetIDsBot
-    on_stop: Stop production version
-  only:
-  - master
-  script:
-  - echo ""
-
-Stop production version:
-  stage: production
-  tags:
-  - prodserver
-  when: manual
-  environment:
-    name: production
-    action: stop
-  script:
-  - echo ""
+    - "npm install prettier"
+    - "npx prettier --check ./"
