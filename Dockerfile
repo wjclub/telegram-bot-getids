@@ -1,7 +1,8 @@
 # syntax=docker/dockerfile:1
 FROM docker.io/node:16-alpine AS build-env
+ENV NODE_ENV production
 
-# Install dependencies first, as they change less ofteh => better caching
+# Install dependencies first, as they change less often => better caching
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
@@ -9,9 +10,5 @@ RUN npm ci
 # Copy actual code into the image.
 COPY . .
 
-FROM docker.io/node:16-alpine
-ENV NODE_ENV production
-
-COPY --from=build-env /app /app
-WORKDIR /app
+# Run the actual program
 CMD ["index.js"]
