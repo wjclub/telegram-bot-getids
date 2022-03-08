@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM docker.io/node:16-alpine AS build-env
+FROM docker.io/node:17-alpine AS build-env
 ENV NODE_ENV production
 
 # Install dependencies first, as they change less often => better caching
